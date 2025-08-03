@@ -16,7 +16,7 @@ public class ChoiceQuestionSlot : MonoBehaviour
         for (int i = 0; i < optionButtons.Count; i++)
         {
             Button btn = optionButtons[i];
-            int index = i;
+            int index = i+1;
 
             btn.onClick.RemoveAllListeners();
             btn.onClick.AddListener(delegate

@@ -11,7 +11,7 @@ public class SubjectiveQuestionSlot : MonoBehaviour
     [SerializeField] private int questionID;
 
     [SerializeField] private PoliceNoteCaseReportUI reportUI;
-    public void Initialize()
+    public void Start()
     {
         inputField.onEndEdit.RemoveAllListeners();
         inputField.onEndEdit.AddListener(OnInputEnded);

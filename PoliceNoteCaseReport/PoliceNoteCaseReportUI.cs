@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Utage;
+using UtageExtensions;
 
 public class PoliceNoteCaseReportUI : MonoBehaviour
 {
@@ -10,8 +12,19 @@ public class PoliceNoteCaseReportUI : MonoBehaviour
     [SerializeField] private Button prevPageButton;
     [SerializeField] private Button nextPageButton;
 
+    [SerializeField] private Button reportButton;
+
     public PoliceNoteCaseReportData reportData = new PoliceNoteCaseReportData();
     private int currentPage = 0;
+
+    private IReportEvaluator evaluator;
+    public virtual AdvEngine Engine => this.GetAdvEngineCacheFindIfMissing(ref engine);
+    protected AdvEngine engine;
+
+    public void Awake()
+    {
+        evaluator = new Episode1ReportEvaluator();
+    }
 
     public void Start()
     {
@@ -22,6 +35,8 @@ public class PoliceNoteCaseReportUI : MonoBehaviour
         ShowPage(currentPage);
         prevPageButton.onClick.AddListener(PrevPage);
         nextPageButton.onClick.AddListener(NextPage);
+
+        reportButton.onClick.AddListener(OnReportClicked);
     }
 
     public void ShowPage(int pageIndex)
@@ -58,5 +73,22 @@ public class PoliceNoteCaseReportUI : MonoBehaviour
         {
             ShowPage(currentPage - 1);
         }
+    }
+
+    private void OnReportClicked()
+    {
+        string nextScenarioLabel = evaluator.Evaluate(reportData);
+
+        StartCoroutine(CoLaunchScenario(nextScenarioLabel));
+    }
+
+    private IEnumerator CoLaunchScenario(string label)
+    {
+
+        while (Engine.IsWaitBootLoading)
+            yield return null;
+    
+        Engine.StartGame(label);
+
     }
 }

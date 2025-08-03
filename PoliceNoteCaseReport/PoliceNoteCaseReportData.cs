@@ -12,6 +12,8 @@ public class PoliceNoteCaseReportData
     {
         if (answer == null) return;
 
+        Debug.Log($"[AddAnswer] Q{answer.QuestionID} ¡æ ¡°{answer.UserAnswer}¡±");
+
         for (int i = 0; i < answerList.Count; i++)
         {
             if (answerList[i].QuestionID == answer.QuestionID)
@@ -35,6 +37,11 @@ public class PoliceNoteCaseReportData
             }
         }
         return null;
+    }
+
+    public void RemoveAnswer(int questionID)
+    {
+        answerList.RemoveAll(a => a.QuestionID == questionID);
     }
 }
 
